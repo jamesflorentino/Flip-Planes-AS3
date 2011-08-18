@@ -14,5 +14,9 @@ package com.jflorentino.fx
 		function linearBottomLeft () : void;
 
 		function linearBottomRight () : void;
+
+		function radialCenter () : void;
+
+		function radialOuter () : void;
 	}
 }

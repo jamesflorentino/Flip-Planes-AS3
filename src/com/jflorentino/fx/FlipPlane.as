@@ -10,12 +10,14 @@ package com.jflorentino.fx
 		public function FlipPlane ( columns : uint = 10 , rows : uint = 10 )
 		{
 			super ( columns , rows );
+			flipY ();
+			behaviors.push ( radialOuter );
+			behaviors.push ( radialCenter );
 			behaviors.push ( random );
 			behaviors.push ( linearTopLeft );
 			behaviors.push ( linearTopRight );
 			behaviors.push ( linearBottomLeft );
 			behaviors.push ( linearBottomRight );
-			flipY ();
 		}
 
 		public function random () : void
@@ -63,6 +65,26 @@ package com.jflorentino.fx
 			{
 				var delay : Number = planes[i]['tileX'] / _canvasColumns / 2;
 				delay += planes[i]['tileY'] / _canvasRows / 2;
+				super.animateItem ( planes[i] , delay );
+			}
+		}
+
+		public function radialCenter () : void
+		{
+			for (var i : uint = 0 ; i < planes.length; i ++ )
+			{
+				var delay : Number = Math.abs ( _canvasColumns / 2 - planes[i]['tileX'] ) / _canvasColumns / 2;
+				delay += Math.abs ( _canvasRows / 2 - planes[i]['tileY'] ) / _canvasRows / 2;
+				super.animateItem ( planes[i] , delay );
+			}
+		}
+
+		public function radialOuter () : void
+		{
+			for (var i : uint = 0 ; i < planes.length; i ++ )
+			{
+				var delay : Number = (_canvasColumns / 2 - (Math.abs ( _canvasColumns / 2 - planes[i]['tileX'] ))) / _canvasColumns / 2;
+				delay += (_canvasRows / 2 - (Math.abs ( _canvasRows / 2 - planes[i]['tileY'] ))) / _canvasRows / 2;
 				super.animateItem ( planes[i] , delay );
 			}
 		}

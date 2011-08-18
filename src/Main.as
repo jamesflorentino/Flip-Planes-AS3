@@ -1,5 +1,8 @@
 ﻿package
 {
+	import flash.text.TextFormat;
+	import flash.text.TextField;
+
 	import com.jflorentino.fx.FlipPlane;
 
 	import flash.events.Event;
@@ -22,12 +25,16 @@
 		private var flipPlane : FlipPlane;
 		private var background : Sprite;
 		private var vignette : Sprite;
+		private var txt : TextField;
+		private var behaviors : Array;
+		private var count_label : uint;
 
 		public function Main ()
 		{
 			createBackground ();
 			createFlipCanvas ();
 			createVignette ();
+			createText ();
 			addEventListener ( Event.ADDED_TO_STAGE , addedToStage );
 		}
 
@@ -40,7 +47,7 @@
 			flipPlane.addPattern ( new lib_bmp2 as Bitmap );
 			flipPlane.addPattern ( new lib_bmp3 as Bitmap );
 			flipPlane.finished.add ( onPlaneTransition );
-			flipPlane.doNextTransition ();
+			count_label = 0;
 			addChild ( flipPlane );
 		}
 
@@ -49,13 +56,27 @@
 			flipPlane.setNextPattern ();
 			flipPlane.doNextTransition ();
 			// get a random direction for the plane animation
-			Math.random () > .5 ? flipPlane.flipX () : flipPlane.flipY ();
+			txt.text = behaviors[count_label];
+			if (Math.random () > .5)
+			{
+				txt.appendText ( ' flipX' );
+				flipPlane.flipX ();
+			}
+			else
+			{
+				txt.appendText ( ' flipY' );
+				flipPlane.flipY ();
+			}
+			count_label ++;
+			if (count_label == behaviors.length)
+				count_label = 0;
 		}
 
 		// / DOCUMENT-RELATED CODE
 		private function addedToStage ( event : Event ) : void
 		{
 			resize ();
+			onPlaneTransition ();
 			stage.addEventListener ( Event.RESIZE , onResize );
 		}
 
@@ -73,6 +94,30 @@
 			vignette.y = flipPlane.y = stage.stageHeight / 2 - flipPlane.height / 2;
 			vignette.width = flipPlane.width;
 			vignette.height = flipPlane.height;
+			txt.x = flipPlane.x;
+			txt.y = background.y;
+		}
+
+		private function createText () : void
+		{
+			var fmt : TextFormat = new TextFormat ();
+			fmt.font = 'Arial Black';
+			fmt.size = 18;
+			fmt.color = 0xff0000;
+			txt = new TextField ();
+			txt.selectable = false;
+			txt.defaultTextFormat = fmt;
+			txt.autoSize = 'left';
+			addChild ( txt );
+
+			behaviors = [];
+			behaviors.push ( 'radialOuter' );
+			behaviors.push ( 'radialCenter' );
+			behaviors.push ( 'random' );
+			behaviors.push ( 'linearTopLeft' );
+			behaviors.push ( 'linearTopRight' );
+			behaviors.push ( 'linearBottomLeft' );
+			behaviors.push ( 'linearBottomRight' );
 		}
 
 		private function createBackground () : void
