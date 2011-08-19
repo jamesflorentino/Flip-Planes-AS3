@@ -81,7 +81,7 @@ package com.jflorentino.fx
 		{
 			var bmp : Bitmap = plane.getChildAt ( 0 ) as Bitmap;
 			bmp.bitmapData.copyPixels ( _patterns[_current_pattern] , _patterns[_current_pattern].rect , new Point ( -_planeWidth * plane['tileX'] , -_planeHeight * plane['tileY'] ) );
-			TweenMax.to ( plane , .5 , { scaleX : 1 , scaleY : 1 , ease : Back.easeOut , onComplete : onAnimateOutComplete } );
+			TweenMax.to ( plane , .5 , { removeTint : true , scaleX : 1 , scaleY : 1 , ease : Back.easeOut , onComplete : onAnimateOutComplete } );
 		}
 
 		protected function onAnimateOutComplete () : void
@@ -179,7 +179,7 @@ package com.jflorentino.fx
 
 		protected function animateItem ( plane : DisplayObject , delay : Number ) : void
 		{
-			TweenMax.to ( plane , .25 , { delay : delay , scaleX : _flipX , scaleY : _flipY , ease : Back.easeIn , onComplete : onAnimateInComplete , onCompleteParams : [ plane ] } );
+			TweenMax.to ( plane , .25 , { tint : 0x000000 , delay : delay , scaleX : _flipX , scaleY : _flipY , ease : Back.easeIn , onComplete : onAnimateInComplete , onCompleteParams : [ plane ] } );
 		}
 	}
 }
